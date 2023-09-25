@@ -22,8 +22,7 @@ def analyze_text(text):
             final_words.append(word)
 
     emotion_list = []
-    positive_keywords = []  # To store positive keywords
-    negative_keywords = []  # To store negative keywords
+    keywords_list = []
 
     with open('emotions.txt', 'r') as file:
         for line in file:
@@ -31,27 +30,15 @@ def analyze_text(text):
             word, emotion = clear_line.split(':')
             if word in final_words:
                 emotion_list.append(emotion)
-                if emotion == 'happy':
-                    positive_keywords.append(word)
-                elif emotion == 'sad':
-                    negative_keywords.append(word)
+                keywords_list.append(word)
 
     global w
     w = Counter(emotion_list)
 
-    print(positive_keywords)
-    print(negative_keywords)
-
-    # Display the keywords with colors
-    if positive_keywords:
-        positive_keywords_label.config(text="Positive Keywords: " + ', '.join(positive_keywords), foreground='green')
+    if keywords_list:
+        keywords_label.config(text="Keywords: " + ', '.join(keywords_list))
     else:
-        positive_keywords_label.config(text="Positive Keywords: None", foreground='green')
-    
-    if negative_keywords:
-        negative_keywords_label.config(text="Negative Keywords: " + ', '.join(negative_keywords), foreground='red')
-    else:
-        negative_keywords_label.config(text="Negative Keywords: None", foreground='red')
+        keywords_label.config(text="Keywords: None")
 
     result_label.config(text=f"Polarity_Score : {SentimentIntensityAnalyzer().polarity_scores(cleaned_text)}")
     sentiment_analyse(cleaned_text)
